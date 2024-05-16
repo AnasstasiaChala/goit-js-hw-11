@@ -31,12 +31,21 @@ function onSearchFormSubmit(event) {
       message: "Sorry, input field can't be empty",
       position: 'topRight',
     });
+    loaderElement.classList.add('is-hidden');
     return;
   }
 
   fetchPhotoByQuery(searchQuery)
     .then(ImagesData => {
       galleryElement.innerHTML = galleryItemsMarkUp(ImagesData);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+      iziToast.error({
+        title: 'Error',
+        message: 'Failed to fetch data. Please try again later.',
+        position: 'topRight',
+      });
     })
     .finally(() => {
       event.target.reset();
